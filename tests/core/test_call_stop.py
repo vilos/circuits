@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from __future__ import print_function
 
 import pytest
@@ -29,20 +30,12 @@ class App(Component):
 
 
 @pytest.fixture
-def app(request, manager, watcher):
-    app = App().register(manager)
-    assert watcher.wait("registered")
-
-    def finalizer():
-        app.unregister()
-
-    request.addfinalizer(finalizer)
-
-    return app
+def app(request):
+    return App()
 
 
-def test_call_stop(manager, watcher, app):
-    x = manager.fire(test())
-    assert watcher.wait("test_success")
+def test_call_stop(app):
+    x = app.fire(test())
+    app.tick()
 
     assert x.value is None
