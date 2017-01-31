@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import pytest
 
-from circuits import handler, Component, Event
+from circuits import Component, Event, handler
 
 
 class test(Event):
