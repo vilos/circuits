@@ -16,7 +16,7 @@ class test(Event):
 
 class App(Component):
 
-    @handler()
+    @handler(priority=1)
     def on_event(self, event, *args, **kwargs):
         if kwargs.get("error", False):
             raise Exception("XXX")
