@@ -421,38 +421,6 @@ class HTTP(BaseComponent):
             res.body = value
             self.fire(response(res))
 
-    @handler("exception")
-    def _on_exception(self, *args, **kwargs):
-        if not len(args) == 3:
-            return
-
-        etype, evalue, etraceback = args
-        fevent = kwargs["fevent"]
-
-        if isinstance(fevent, response):
-            res = fevent.args[0]
-            req = res.request
-        elif isinstance(fevent.value.parent.event, request):
-            req, res = fevent.value.parent.event.args[:2]
-        elif len(fevent.args[2:]) == 4:
-            req, res = fevent.args[2:]
-        elif len(fevent.args) == 2 and isinstance(fevent.args[0], socket):
-            req = wrappers.Request(fevent.args[0], server=self._server)
-            res = wrappers.Response(req, self._encoding, 500)
-        else:
-            return
-
-        if isinstance(evalue, HTTPException):
-            code = evalue.code
-        else:
-            code = None
-
-        self.fire(
-            httperror(
-                req, res, code=code, error=(etype, evalue, etraceback)
-            )
-        )
-
     @handler("request_failure")
     def _on_request_failure(self, erequest, error):
         req, res = erequest.args
