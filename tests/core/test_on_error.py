@@ -42,4 +42,4 @@ def test_on_error(app):
     app.tick()
 
     assert isinstance(x[1], Exception)
-    assert x[1].message == "XXX"
+    assert x[1].args[0] == "XXX"
