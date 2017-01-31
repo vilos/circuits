@@ -4,7 +4,6 @@ This module implements the server side Hyper Text Transfer Protocol
 or commonly known as HTTP.
 """
 from io import BytesIO
-from socket import socket
 
 from circuits.core import BaseComponent, Value, handler
 from circuits.net.events import close, write
