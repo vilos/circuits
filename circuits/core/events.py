@@ -19,7 +19,7 @@ class Event(object):
     waitingHandlers = 0
 
     # Behaviour for handling errors:
-    # One of "abort", "igore" (default)
+    # One of "abort", "ingore" (default), "throw_first", "throw_last"
     on_error = None
 
     @classmethod
