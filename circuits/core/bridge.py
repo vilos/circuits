@@ -62,11 +62,12 @@ class Bridge(BaseComponent):
             self._values[value] = eid
         elif isinstance(obj, Value):
             if obj.result:
+                ev = self._values.pop(eid)
                 if isinstance(obj.value, list):
                     for item in obj.value:
-                        self._values[eid].value = item
+                        ev.value = item
                 else:
-                    self._values[eid].value = obj.value
+                    ev.value = obj.value
             event = Event.create(Bridge.__waiting_event(eid))
             event.remote = True
             self.fire(event, self.channel)
@@ -74,7 +75,7 @@ class Bridge(BaseComponent):
     @handler("value_changed", channel="*")
     def _on_value_changed(self, value):
         try:
-            eid = self._values[value]
+            eid = self._values.pop(value)
             if value.errors:
                 Bridge.__adapt_error_value(value)
             self.__write(eid, value)
